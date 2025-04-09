@@ -41,7 +41,3 @@
 - MySQL 8.0+
 - Maven 3.6+
 
-## 快速开始
-```bash
-git clone https://github.com/your-repo/exam-system.git
-mvn spring-boot:run
