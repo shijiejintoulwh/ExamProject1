@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正在进行考试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: white;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        h1 {
+            margin: 0;
+            color: #333;
+        }
+
+        .exam-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .exam-content {
+            display: flex;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-list {
+            width: 100px;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+        }
+
+        .question-item {
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .question-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .question-item.active {
+            background-color: #e0f7fa;
+            font-weight: bold;
+        }
+
+        .question-detail {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            height: 600px;
+        }
+
+        .question-title {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .options {
+            margin: 15px 0;
+        }
+
+        .option {
+            margin-bottom: 10px;
+        }
+
+        input[type="radio"], input[type="text"] {
+            margin-right: 10px;
+        }
+
+        .exam-footer {
+            background-color: white;
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .timer {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* 在现有样式中添加 */
+        .history-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            width: 60%;
+            margin: 50px auto;
+            border-radius: 5px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* 在原有样式基础上修改 */
+        .exam-content {
+            display: flex;
+            gap: 20px; /* 增加间距 */
+            height: calc(100vh - 200px); /* 限制高度 */
+        }
+
+        .question-list {
+            width: 150px;
+            background: #f8f9fa;
+            padding: 15px 0;
+        }
+
+        .question-detail {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .exam-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>综合模拟测验</h1>
+    <div class="exam-info">
+        <div>剩余时间: <span id="timer">00:00:00</span></div>
+        <div>总分: 100分</div>
+    </div>
+</div>
+
+
+<div class="question-detail">
+    <h2 class="question-title"></h2>
+    <div class="options">
+        <label class="option"><input type="radio" name="q1" value="A"></label>
+        <label class="option"><input type="radio" name="q1" value="B"></label>
+        <label class="option"><input type="radio" name="q1" value="C"> </label>
+        <label class="option"><input type="radio" name="q1" value="D"> </label>
+    </div>
+
+    <h2 class="question-title"></h2>
+    <input type="text" placeholder="请输入答案">
+
+    <!-- 更多题目 -->
+</div>
+</div>
+
+<div class="exam-footer">
+    <button class="btn" onclick="submitExam()">提交考试</button>
+</div>
+
+
+<script>
+    // 在所有页面头部添加
+    document.addEventListener('DOMContentLoaded', function() {
+        checkLoginStatus();
+    });
+
+    async function checkLoginStatus() {
+        try {
+            const response = await fetch('/api/checkSession', {
+                credentials: 'include'
+            });
+            if (!response.ok) {
+                window.location.href = 'login.html';
+            }
+        } catch (error) {
+            console.error('Session check failed:', error);
+            window.location.href = 'login.html';
+        }
+    }
+    let timeLeft = 60 * 60; // 90分钟转换为秒
+    let timerId = null;
+
+    // 在现有script中添加
+    async function submitExam() {
+        // 修改submitExam函数中的answers结构
+        const answers = {
+            choices: examData.choiceQuestions.map(q => ({
+                cid: q.cid,
+                canswer: document.querySelector(`input[name="q${q.cid}"]:checked`)?.value || ''
+            })),
+            fills: examData.fillQuestions.map(q => ({
+                fid: q.fid,
+                fanswer: document.querySelector(`input[data-fid="${q.fid}"]`).value
+            }))
+        };
+
+
+        try {
+            const response = await fetch('/api/exam/submit', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(answers)
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert(`考试提交成功！得分：${result.score}`);
+                window.location.href = 'student.html';
+                //showHistory(); // 提交后显示历史记录
+            }else {
+                const error = await response.json();
+                alert(`提交失败：${error.error}`);
+            }
+        } catch (error) {
+            console.error('提交失败:', error);
+        }
+    }
+
+
+    function updateTimer() {
+        const hours = Math.floor(timeLeft / 3600);
+        const minutes = Math.floor((timeLeft % 3600) / 60);
+        const seconds = timeLeft % 60;
+
+        document.getElementById('timer').textContent =
+            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        if (timeLeft <= 0) {
+            clearInterval(timerId);
+            submitExam();
+        }
+
+        timeLeft--;
+    }
+
+    function startTimer() {
+        timerId = setInterval(updateTimer, 1000);
+    }
+
+
+    // 开始计时
+    startTimer();
+    // 在现有script标签内添加
+    let examData = {
+        choiceQuestions: [],
+        fillQuestions: []
+    };
+
+    async function loadExamQuestions() {
+        try {
+            const [choiceRes, fillRes] = await Promise.all([
+                fetch('/api/exam/choice/random'),
+                fetch('/api/exam/fill/random')
+            ]);
+
+            examData.choiceQuestions = await choiceRes.json();
+            examData.fillQuestions = await fillRes.json();
+            renderQuestions();
+        } catch (error) {
+            console.error('加载试题失败:', error);
+        }
+    }
+
+    function renderQuestions() {
+        const container = document.querySelector('.question-detail');
+        let html = '';
+
+        // 渲染选择题
+        examData.choiceQuestions.forEach((q, index) => {
+            html += `<div class="question-item">
+            <h2>${index + 1}. ${q.cquestion}</h2>
+            <div class="options">
+                ${['A', 'B', 'C', 'D'].map(opt => `
+                    <label class="option">
+                        <input type="radio" name="q${q.cid}" value="${opt}">
+                        ${opt}. ${q['cchoice' + opt]}
+                    </label>
+                `).join('')}
+            </div>
+        </div>`;
+        });
+
+        // 渲染填空题
+        examData.fillQuestions.forEach((q, index) => {
+            html += `<div class="question-item">
+            <h2>${examData.choiceQuestions.length + index + 1}. ${q.fquestion}</h2>
+            <input type="text" placeholder="请输入答案" data-fid="${q.fid}">
+        </div>`;
+        });
+
+        container.innerHTML = html;
+    }
+
+    // 页面加载时调用
+    window.onload = loadExamQuestions;
+
+</script>
+</body>
+</html>
