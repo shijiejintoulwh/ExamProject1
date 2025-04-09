@@ -1,14 +1,47 @@
-这是一个基于Spring Boot构建的在线考试系统，包含完整的权限管理和多角色功能模块。系统采用Maven进行依赖管理，使用MySQL作为数据库，MyBatis作为持久层框架，实现了试卷生成、在线答题、自动阅卷等功能。
+# ExamProject - 在线考试系统
 
-技术亮点：
-采用分层架构设计（Controller/Service/Mapper）
-RESTful API风格接口
-基于Session的登录状态管理
-MyBatis注解式SQL开发
-前后端分离架构
-自动阅卷算法实现
+基于Spring Boot构建的智能在线考试平台，支持多角色协同工作，提供完整的考试流程管理解决方案。
 
-环境要求：
-JDK 17+
-MySQL 8.0+
-Maven 3.6+
+## 功能特性
+
+### 学生端
+- 在线实时考试（支持选择题/填空题）
+- 考试历史记录查询
+- 倒计时自动提交
+- 即时成绩反馈
+
+### 教师端
+- 题库管理系统（CRUD）
+- 智能组卷功能（目前没有）
+- 考生成绩统计（目前没有）
+- 用户信息维护（目前没有）
+
+### 管理员端
+- 系统用户管理
+- 权限分配
+- 操作日志审计（目前没有）
+- 系统健康监控（目前没有）
+
+## 技术栈
+- **后端框架**: Spring Boot 3.4.4
+- **持久层**: MyBatis + MySQL
+- **安全控制**: Session-Based认证 + 自定义拦截器
+- **API风格**: RESTful
+- **构建工具**: Maven
+
+## 系统亮点
+- 三层架构清晰分离（Controller/Service/Mapper）
+- 自动阅卷算法实现
+- 实时考试状态监控（目前没有）
+- 跨域安全解决方案（目前没有）
+- 完善的异常处理机制（目前没有）
+
+## 环境要求
+- JDK 17+
+- MySQL 8.0+
+- Maven 3.6+
+
+## 快速开始
+```bash
+git clone https://github.com/your-repo/exam-system.git
+mvn spring-boot:run
