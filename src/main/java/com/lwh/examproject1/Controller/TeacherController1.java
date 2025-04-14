@@ -17,6 +17,7 @@ public class TeacherController1 {
 
     @GetMapping("/list")
     public ResponseEntity<List<Teacher>> getAllTeachers() {
+        // 调用Service层获取教师列表
         return ResponseEntity.ok(teacherService.getAllTeachers());
     }
 
@@ -26,13 +27,13 @@ public class TeacherController1 {
             teacherService.addTeacher(teacher);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
+            // 处理异常，返回错误信息
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateTeacher(@PathVariable String id, @RequestBody Teacher teacher) {
-       // teacher.setTid(id);
         teacherService.updateTeacher(teacher);
         return ResponseEntity.ok().build();
     }
@@ -42,9 +43,9 @@ public class TeacherController1 {
         teacherService.deleteTeacher(id);
         return ResponseEntity.ok().build();
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<Teacher> getTeacherById(@PathVariable String id) {
+        // 调用Service层获取教师信息
         return ResponseEntity.ok(teacherService.getTeacherById(id));
     }
 }

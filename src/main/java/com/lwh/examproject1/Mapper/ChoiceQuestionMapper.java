@@ -7,32 +7,13 @@ import java.util.List;
 
 @Mapper
 public interface ChoiceQuestionMapper {
-    /*
-        @Select("select * from choicequestion")
-        List<ChoiceQuestion> selectAllChoiceQuestions();
-        @Select("select * from choicequestion where c_id=#{cid}")
-        ChoiceQuestion selectChoiceQuestionByCid(int cid);
 
-        @Insert("insert into choicequestion(c_id,c_question,c_choiceA,c_choiceB,c_choiceC,c_choiceD,c_answer) values(#{cid},#{cquestion},#{cchoiceA},#{cchoiceB},#{cchoiceC},#{cchoiceD},#{canswer})")
-        void insertChoiceQuestion(ChoiceQuestion choiceQuestion);
-
-        @Update("update choicequestion set c_question=#{cquestion},c_choiceA=#{cchoiceA},c_choiceB=#{cchoiceB},c_choiceC=#{cchoiceC},c_choiceD=#{cchoiceD},c_answer=#{canswer} where c_id=#{cid}")
-        void updateChoiceQuestion(ChoiceQuestion choiceQuestion);
-
-        @Delete("delete from choicequestion where c_id=#{cid}")
-        void deleteChoiceQuestion(int cid);
-
-
-    */
     @Select("select * from choicequestion")
     List<ChoiceQuestion> selectAllChoiceQuestions();
 
     @Select("select * from choicequestion where c_id=#{cid}")
     ChoiceQuestion selectChoiceQuestionByCid(int cid);
 
-    /*  @Insert("insert into choicequestion(c_question,c_choiceA,c_choiceB,c_choiceC,c_choiceD,c_answer) values(#{cquestion},#{cchoiceA},#{cchoiceB},#{cchoiceC},#{cchoiceD},#{canswer})")
-      @Options(useGeneratedKeys = true, keyProperty = "cid")
-      void insertChoiceQuestion(ChoiceQuestion choiceQuestion);*/
     @Insert("INSERT INTO choicequestion(c_question,c_choiceA,c_choiceB,c_choiceC,c_choiceD,c_answer) " +
             "VALUES(#{cquestion},#{cchoiceA},#{cchoiceB},#{cchoiceC},#{cchoiceD},#{canswer})")
     @Options(useGeneratedKeys = true, keyProperty = "cid", keyColumn = "c_id")

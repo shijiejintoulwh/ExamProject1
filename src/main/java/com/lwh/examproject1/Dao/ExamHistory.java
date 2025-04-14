@@ -3,12 +3,10 @@ package com.lwh.examproject1.Dao;
 import java.util.Date;
 
 public class ExamHistory {
-    private int id;
-    private String studentId;
-    private int score;
-    private Date examTime;
-
-    // 省略构造函数和getter/setter
+    private int id; // 主键ID
+    private String studentId; // 学生ID
+    private int score; // 考试分数
+    private Date examTime; // 考试时间
 
     public ExamHistory(int id, String studentId, int score, Date examTime) {
         this.id = id;

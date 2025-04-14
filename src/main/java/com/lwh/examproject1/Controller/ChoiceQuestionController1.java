@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 
-// ChoiceQuestionController1.java
+
 @RestController
 @RequestMapping("/api/choice")
 @CrossOrigin(origins = "*")
@@ -22,12 +22,6 @@ public class ChoiceQuestionController1 {
         return questionService.getAllQuestions();
     }
 
-    /*  @PostMapping("/add")
-      public ResponseEntity<?> addQuestion(@RequestBody ChoiceQuestion question) {
-          questionService.addQuestion(question);
-          return ResponseEntity.ok().build();
-
-      }*/
     @PostMapping("/add")
     public ResponseEntity<?> addQuestion(@RequestBody ChoiceQuestion question) {
         try {
@@ -42,17 +36,14 @@ public class ChoiceQuestionController1 {
         }
     }
 
-
-  // ChoiceQuestionController1.java
-@PutMapping("/{cid}")
-public ResponseEntity<?> updateQuestion(
-    @PathVariable int cid,
-    @RequestBody ChoiceQuestion question)
-{
-    question.setCid(cid); // 关键修复：注入路径参数到实体
-    questionService.updateQuestion(question);
-    return ResponseEntity.ok().build();
-}
+    @PutMapping("/{cid}")
+    public ResponseEntity<?> updateQuestion(
+            @PathVariable int cid,
+            @RequestBody ChoiceQuestion question) {
+        question.setCid(cid);
+        questionService.updateQuestion(question);
+        return ResponseEntity.ok().build();
+    }
 
 
     @DeleteMapping("/{cid}")

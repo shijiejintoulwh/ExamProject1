@@ -107,6 +107,7 @@
     <div class="modal-content">
         <h3>考试历史记录</h3>
         <div id="historyList"></div>
+
         <button class="btn" onclick="closeHistory()">关闭</button>
     </div>
 </div>
@@ -146,7 +147,8 @@ async function showHistory() {
             const history = await response.json();
             const historyList = document.getElementById('historyList');
             historyList.innerHTML = history.map(h => `
-                <div class="history-item">
+
+<div class="history-item">
                     <span>${new Date(h.examTime).toLocaleString()}</span>
                     <span>得分：${h.score}</span>
                 </div>

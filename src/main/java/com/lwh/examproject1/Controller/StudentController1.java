@@ -24,15 +24,16 @@ public class StudentController1 {
     public ResponseEntity<?> addStudent(@RequestBody Student student) {
         try {
             studentService.addStudent(student);
+            // 返回成功响应
             return ResponseEntity.ok().build();
         } catch (Exception e) {
+            // 捕获所有异常，返回服务器错误状态码
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateStudent(@PathVariable String id, @RequestBody Student student) {
-       // student.setSid(id);
         studentService.updateStudent(student);
         return ResponseEntity.ok().build();
     }

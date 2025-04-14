@@ -29,11 +29,7 @@ public class FillQuestionService1 {
     public FillQuestion getQuestionById(int fid) {
         return questionMapper.selectFillQuestionByFid(fid);
     }
-// 在现有代码中添加
 public List<FillQuestion> getRandomQuestions(int count) {
     return questionMapper.selectRandomFillQuestions(count);
 }
-
-// 保持其他已有方法不变
-
 }
