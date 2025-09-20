@@ -25,13 +25,29 @@
             color: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-
+        /* 用户操作区域样式 */
+        .user-actions {
+            display: flex;
+            gap: 10px; /* 控制两个按钮之间的间距 */
+            align-items: center;
+        }
         .user-center {
             cursor: pointer;
             font-weight: bold;
             padding: 8px 15px;
             border-radius: 4px;
             transition: background 0.3s;
+        }+
+
+        .user-light {
+            cursor: pointer;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        .user-light:hover {
+            background: #45a049;
         }
 
         .user-center:hover {
@@ -213,8 +229,11 @@
 <!-- 头部区域 -->
 <div class="header">
     <h1>教师管理界面</h1>
-    <div class="user-center" onclick="showUserInfo()">用户中心</div>
-</div>
+    <div class="user-actions">
+        <div class="user-center" onclick="showUserInfo()">用户中心</div>
+        <div class="user-center"  onclick="window.location.href='login.html'" >退出登录</div>
+    </div>
+    </div>
 
 <!-- 主内容区域 -->
 <div class="main-container">

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理员界面</title>
     <style>
-        .form-group {
+/*        .form-group {
             margin-bottom: 15px;
         }
 
@@ -29,15 +29,23 @@
             text-align: right;
         }
 
-        /* 基础样式 */
-        body {
+        !* 基础样式 *!
+     !*   body {
             font-family: Arial, sans-serif;
             margin: 0;
             display: flex;
             min-height: 100vh;
+        }*!
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column; !* 改为列布局 *!
+            min-height: 100vh;
+            background: #f8f9fa;
         }
 
-        /* 左侧菜单 */
+        !* 左侧菜单 *!
         .sidebar {
             width: 200px;
             background: #f8f9fa;
@@ -58,14 +66,14 @@
             color: white;
         }
 
-        /* 内容区域 */
+        !* 内容区域 *!
         .content {
             flex: 1;
             padding: 20px;
             background: #f5f5f5;
         }
 
-        /* 表格样式 */
+        !* 表格样式 *!
         .data-table {
             width: 100%;
             border-collapse: collapse;
@@ -91,10 +99,10 @@
             margin-bottom: 20px;
         }
 
-        /* 模态框样式 */
+        !* 模态框样式 *!
         .modal-overlay {
             position: fixed;
-            /* 保持原有模态框样式 */
+            !* 保持原有模态框样式 *!
         }
 
         .modal-overlay {
@@ -120,7 +128,7 @@
             position: relative;
         }
 
-        /* 新增按钮样式 */
+        !* 新增按钮样式 *!
         .btn {
             padding: 8px 16px;
             border-radius: 4px;
@@ -147,38 +155,287 @@
         .btn:hover {
             opacity: 0.9;
         }
+   !*     .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #4CAF50;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }*!
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #4CAF50;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
+        .user-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .user-center, .user-light {
+            cursor: pointer;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .user-center:hover, .user-light:hover {
+            background: #45a049;
+        }
+
+        !* 主内容区域 *!
+        .main-container {
+            display: flex;
+            flex: 1;
+            padding: 0 20px 20px;
+        }
+
+        !* 原有样式保持不变 *!
+        .form-group {
+            margin-bottom: 15px;
+        }*/
+.main-container {
+    display: flex;
+    flex: 1;
+    padding: 0 20px 20px;
+}
+
+/* 优化侧边栏样式 */
+.sidebar {
+    width: 200px;
+    background: #f1f3f5;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    border-radius: 0 8px 8px 0;
+    margin-right: 20px;
+}
+
+/* 调整内容区域 */
+.content {
+    flex: 1;
+    padding: 50px 20px;
+
+    max-width: calc(95% - 200px);
+    background: #f5f5f5;
+}
+
+/* 调整表格标题区域 */
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* 保留原有样式 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: #4CAF50;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.user-center, .user-light {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.user-center:hover, .user-light:hover {
+    background: #45a049;
+}
+
+.menu-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+    background: #e9ecef;
+    color: #495057;
+    text-align: center;
+}
+
+.menu-item.active {
+    background: #4CAF50;
+    color: white;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.data-table th,
+.data-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.data-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background: #4CAF50;
+    color: white;
+}
+
+.btn-edit {
+    background: #2196F3;
+    color: white;
+    margin-right: 8px;
+}
+
+.btn-delete {
+    background: #f44336;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-dialog {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.modal-actions {
+    margin-top: 25px;
+    text-align: right;
+}
+.main-container{
+    display: flex;
+    flex-direction: row;
+}
     </style>
 </head>
 <body>
-<!-- 左侧菜单 -->
-<div class="sidebar">
-    <div class="menu-item active" data-type="admin">管理员管理</div>
-    <div class="menu-item" data-type="student">学生管理</div>
-    <div class="menu-item" data-type="teacher">教师管理</div>
-</div>
-
-<!-- 内容区域 -->
-<div class="content">
-    <div class="table-header">
-        <h2 id="tableTitle">管理员列表</h2>
-        <button class="btn" onclick="showAddModal()">添加</button>
+<!-- 头部区域 -->
+<div class="header">
+    <h1>管理员界面</h1>
+    <div class="user-actions">
+  <!--      <div class="user-center" onclick="showUserInfo()">用户中心</div>-->
+        <div class="user-light" onclick="window.location.href='login.html'">退出登录</div>
     </div>
-    <table class="data-table" id="dataTable">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>姓名</th>
-            <th>性别</th>
-            <th>身份证号</th>
-            <th>电话</th>
-            <th>密码</th>
-            <th>职称/系别</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-    </table>
+</div>
+<div class="main-container">
+    <!-- 左侧菜单 -->
+    <div class="sidebar">
+        <div class="menu-item active" data-type="admin">管理员管理</div>
+        <div class="menu-item" data-type="student">学生管理</div>
+        <div class="menu-item" data-type="teacher">教师管理</div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="content">
+        <div class="table-header">
+            <h2 id="tableTitle">管理员列表</h2>
+            <button class="btn" onclick="showAddModal()">添加</button>
+        </div>
+        <table class="data-table" id="dataTable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>身份证号</th>
+                <th>电话</th>
+                <th>密码</th>
+                <th>职称/系别</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
 </div>
 
 <!-- 添加/修改模态框 -->
